@@ -146,7 +146,6 @@ export function UploadForm({ t }: UploadFormProps) {
               ref={fileInputRef}
               type="file"
               multiple
-              accept=".html,.htm"
               onChange={handleFileSelect}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
             />
