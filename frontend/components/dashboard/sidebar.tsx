@@ -5,14 +5,39 @@ import { usePathname } from "next/navigation"
 import { Upload, BarChart3, AlertCircle, FileText, Settings } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+interface SidebarProps {
+  t?: {
+    nav: {
+      upload: string
+      statistics: string
+      errors: string
+      settings: string
+    }
+  }
+}
+
 const navigation = [
-  { name: "Upload Report", href: "/", icon: Upload },
-  { name: "Statistics", href: "/statistics", icon: BarChart3 },
-  { name: "Error List", href: "/errors", icon: AlertCircle },
+  { nameKey: "nav.upload", href: "/", icon: Upload },
+  { nameKey: "nav.statistics", href: "/statistics", icon: BarChart3 },
+  { nameKey: "nav.errors", href: "/errors", icon: AlertCircle },
 ]
 
-export function Sidebar() {
+export function Sidebar({ t }: SidebarProps) {
   const pathname = usePathname()
+  
+  // Extract locale from pathname (e.g., "/az/statistics" -> "az")
+  const pathnameParts = pathname.split("/")
+  const lang = pathnameParts[1] || "en"
+  
+  const getLabel = (key: string) => {
+    if (!t) return key.split(".").pop()?.replace(/([A-Z])/g, " $1").trim()
+    const keys = key.split(".")
+    let value: any = t
+    for (const k of keys) {
+      value = value?.[k]
+    }
+    return value || key
+  }
 
   return (
     <div className="flex h-full w-64 flex-col border-r bg-white">
@@ -22,11 +47,11 @@ export function Sidebar() {
       </div>
       <nav className="flex-1 space-y-1 px-3 py-4">
         {navigation.map((item) => {
-          const isActive = pathname === item.href
+          const isActive = pathname === `/${lang}${item.href}` || pathname === item.href
           return (
             <Link
-              key={item.name}
-              href={item.href}
+              key={item.nameKey}
+              href={`/${lang}${item.href}`}
               className={cn(
                 "flex items-center rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                 isActive
@@ -35,18 +60,18 @@ export function Sidebar() {
               )}
             >
               <item.icon className={cn("mr-3 h-5 w-5", isActive ? "text-blue-600" : "text-gray-400")} />
-              {item.name}
+              {getLabel(item.nameKey)}
             </Link>
           )
         })}
       </nav>
       <div className="border-t p-4">
         <Link
-          href="/settings"
+          href={`/${lang}/settings`}
           className="flex items-center rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900"
         >
           <Settings className="mr-3 h-5 w-5 text-gray-400" />
-          Settings
+          {t?.nav?.settings || "Settings"}
         </Link>
       </div>
     </div>

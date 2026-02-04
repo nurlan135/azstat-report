@@ -2,6 +2,13 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { Toaster } from "sonner"
 import "../globals.css"
+import { Sidebar } from "@/components/dashboard/sidebar"
+import { en, az } from "@/app/dictionaries/en"
+
+const dictionaries = {
+  en,
+  az,
+}
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,13 +37,19 @@ export default async function RootLayout({
   params: Promise<{ lang: string }>
 }) {
   const { lang } = await params
+  const t = dictionaries[lang as keyof typeof dictionaries] || en
   
   return (
     <html lang={lang}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="flex h-screen">
+          <Sidebar t={t} />
+          <main className="flex-1 overflow-auto bg-gray-50 p-6">
+            {children}
+          </main>
+        </div>
         <Toaster position="top-right" />
       </body>
     </html>
