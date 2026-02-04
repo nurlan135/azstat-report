@@ -88,6 +88,8 @@ export async function uploadReport(file: File): Promise<Report> {
   const response = await fetch(`${API_BASE_URL}/api/upload`, {
     method: "POST",
     body: formData,
+    // Increase timeout for larger files
+    signal: AbortSignal.timeout(30000), // 30 seconds
   })
 
   if (!response.ok) {
