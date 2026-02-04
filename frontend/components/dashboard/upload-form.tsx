@@ -129,7 +129,7 @@ export function UploadForm({ t }: UploadFormProps) {
       <CardContent>
         <div
           className={cn(
-            "relative border-2 border-dashed rounded-lg p-8 text-center transition-colors",
+            "relative border-2 border-dashed rounded-lg p-4 md:p-8 text-center transition-colors",
             isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300 hover:border-gray-400"
           )}
           onDragOver={handleDragOver}
@@ -144,11 +144,11 @@ export function UploadForm({ t }: UploadFormProps) {
             onChange={handleFileSelect}
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
           />
-          <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-          <p className="text-lg font-medium text-gray-900 mb-1">
+          <Upload className="mx-auto h-10 w-10 md:h-12 md:w-12 text-gray-400 mb-3 md:mb-4" />
+          <p className="text-base md:text-lg font-medium text-gray-900 mb-1">
             {uploadText.dragDrop}
           </p>
-          <p className="text-sm text-gray-500 mb-4">{uploadText.browse}</p>
+          <p className="text-xs md:text-sm text-gray-500 mb-3 md:mb-4">{uploadText.browse}</p>
           <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()}>
             {uploadText.selectFiles}
           </Button>
@@ -161,19 +161,19 @@ export function UploadForm({ t }: UploadFormProps) {
               {files.map((file) => (
                 <div
                   key={file.id}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                  className="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-gray-50 rounded-lg gap-2"
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-2xl">{getFileIcon(file.type)}</span>
                     <div>
-                      <p className="font-medium text-gray-900">{file.name}</p>
+                      <p className="font-medium text-gray-900 truncate max-w-[150px] sm:max-w-none">{file.name}</p>
                       <p className="text-sm text-gray-500">{formatFileSize(file.size)}</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center justify-between sm:justify-end space-x-2">
                     {file.status === "uploading" && (
                       <>
-                        <Progress value={45} className="w-20 h-2" />
+                        <Progress value={45} className="w-16 h-2 sm:w-20" />
                         <Loader2 className="h-4 w-4 animate-spin text-gray-500" />
                       </>
                     )}
