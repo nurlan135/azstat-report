@@ -136,22 +136,24 @@ export function UploadForm({ t }: UploadFormProps) {
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
         >
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            accept=".html,.htm"
-            onChange={handleFileSelect}
-            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-          />
           <Upload className="mx-auto h-10 w-10 md:h-12 md:w-12 text-gray-400 mb-3 md:mb-4" />
           <p className="text-base md:text-lg font-medium text-gray-900 mb-1">
             {uploadText.dragDrop}
           </p>
           <p className="text-xs md:text-sm text-gray-500 mb-3 md:mb-4">{uploadText.browse}</p>
-          <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()}>
-            {uploadText.selectFiles}
-          </Button>
+          <div className="relative">
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept=".html,.htm"
+              onChange={handleFileSelect}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+            />
+            <Button type="button" variant="outline">
+              {uploadText.selectFiles}
+            </Button>
+          </div>
         </div>
 
         {files.length > 0 && (
